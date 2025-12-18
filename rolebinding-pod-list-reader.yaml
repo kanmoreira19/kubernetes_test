@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pod-list-reader-binding
+  namespace: dev
+subjects:
+  - kind: ServiceAccount
+    name: sa-dev-reader
+    namespace: dev
+roleRef:
+  kind: Role
+  name: pod-list-reader
+  apiGroup: rbac.authorization.k8s.io
+

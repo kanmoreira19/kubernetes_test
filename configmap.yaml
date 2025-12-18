@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  APP_NAME: "nginx-k8s-lab"
+  APP_ENV: "production"
+  APP_MESSAGE: "Hello from ConfigMap in Kubernetes!"
+
