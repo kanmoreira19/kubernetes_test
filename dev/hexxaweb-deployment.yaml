@@ -1,0 +1,88 @@
+# nginx-hexxa.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hexxa-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hexxa-nginx
+  template:
+    metadata:
+      labels:
+        app: hexxa-nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.27-bookworm  # Debian 12 [memory:6]
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-conf
+          mountPath: /etc/nginx/conf.d
+        - name: html
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: nginx-config
+      - name: html
+        configMap:
+          name: hexxa-html
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hexxa-nginx
+spec:
+  selector:
+    app: hexxa-nginx
+  ports:
+  - port: 80
+    targetPort: 8080
+
+      ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  default.conf: |
+    server {
+        listen 80;
+        server_name hexxa.local;
+        
+        location / {
+            root /usr/share/nginx/html;
+            index index.html;
+            try_files $uri $uri/ /index.html;
+        }
+        
+        location /health {
+            return 200 "Nginx Hexxa OK\n";
+            add_header Content-Type text/plain;
+        }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hexxa-html
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>Hexxa Nginx MicroK8s</title></head>
+    <body>
+        <h1>🚀 Nginx Hexxa - MicroK8s Ingress!</h1>
+        <p>Host: <span id="host"></span></p>
+        <p>Porta: 8080</p>
+        <p>Server: <span id="server"></span></p>
+        <script>
+            document.getElementById('host').textContent = location.host;
+            document.getElementById('server').textContent = navigator.userAgent;
+        </script>
+    </body>
+    </html>
+

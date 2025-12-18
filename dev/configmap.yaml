@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: dev
+data:
+  APP_NAME: "nginx-k8s-lab"
+  APP_ENV: "dev"
+  APP_MESSAGE: "Hello from ConfigMap in dev namespace!"
+

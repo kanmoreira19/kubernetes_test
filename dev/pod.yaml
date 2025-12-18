@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: app-com-storage
+spec:
+  containers:
+  - name: app
+    image: nginx
+    volumeMounts:
+    - mountPath: /data
+      name: storage
+  volumes:
+  - name: storage
+    persistentVolumeClaim:
+      claimName: meu-pvc
+
