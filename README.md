@@ -1,5 +1,7 @@
 # Instalação MicroK8s do Zero - Cluster Completo
 
+## LAB - 1
+
 Documentação completa para instalação MicroK8s em Ubuntu Server 22.04/24.04 LTS, criação de cluster HA, ativação de addons essenciais (DNS, Storage, Ingress) e validações.
 
 ## 📋 Pré-requisitos
